@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlay id="cssInspectorOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- Can't add an overlay, since it is written dynamically in CssRuleView.jsm.
+<menupopup id="rule-view-context-menu">
+	<menuitem id="new-rule-devtooltweak"
+        label="New Rule..."
+        accesskey="N"
+        oncommand="alert('yahoo')"/>
+</menupopup>
+-->
+<script type="text/javascript" src="chrome://devtooltweaks/content/cssInspectorOverlay.js"></script>
+</overlay>

@@ -1,0 +1,31 @@
+/**
+ * Firefox DevTools Tweak addon - extends Firefox DevTool.
+ * by Luke Bryan
+ * Portions based on Firefox DevTools code.
+ */
+
+/* Fix way too tall switcher at top: */
+toolbar.devtools-tabbar {
+ min-height:24px;
+ height:24px;
+ background:rgba(0,0,0,0.75);
+}
+
+#toolbox-tabs > radio {
+ min-height: 24px;
+ height: 24px;
+}
+
+/* Hide the text, make small icons for narrow view. */
+@media only screen and (max-width:726px) {
+	#toolbox-tabs > radio.devtools-tab.toolbox-tab,
+	#toolbox-tabs .radio-label-box,
+	#toolbox-tabs .radio-label-center-box {
+		width:44px;
+		min-width:44px;
+	}
+	
+	#toolbox-tabs .radio-label {
+		display:none;
+	}
+}

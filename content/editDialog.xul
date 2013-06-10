@@ -1,0 +1,30 @@
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<window id="yourwindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:h="http://www.w3.org/1999/xhtml">
+<script type="text/javascript">
+<![CDATA[
+
+window.onload = function() {
+	var htm = document.getElementById('htm');
+	if (window.arguments[0]) {
+		htm.value = ''+window.arguments[0].src;
+		window.arguments[0].src = undefined // don't overwrite on cancel close.
+		document.title = window.arguments[0].title;
+	}
+}
+function save() {
+	var htm = document.getElementById('htm');
+	window.arguments[0].src = htm.value;
+	window.close();
+}
+]]>
+</script>
+<vbox>
+<vbox flex="1">
+<textbox id="htm" multiline="true" rows="10"/>
+</vbox>
+<hbox>
+<button label="Save Changes" oncommand="save()"/>
+<label value="Warning: changing the innerHTML will remove event listeners!" />
+</hbox>
+</vbox>
+</window>

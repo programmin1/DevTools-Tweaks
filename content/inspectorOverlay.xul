@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlay id="dtInspectorOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<menupopup id="inspector-node-popup">
+	<menuitem id="node-menu-edititem"
+        label="Edit HTML"
+        accesskey="E"
+        oncommand="dt.editHtml()"
+        position="1"/>
+    <menuseparator position="2"/>
+</menupopup>
+
+<script src="chrome://devtooltweaks/content/inspectorTweaks.js"></script>
+</overlay>

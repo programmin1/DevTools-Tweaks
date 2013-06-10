@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlay id="dtToolbarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<!-- currently broken, this would add a 'split panel' checkbox to show web console always:
+<script src="chrome://devtooltweaks/content/toolboxOverlay.js"></script>
+
+<notificationbox id="toolbox-notificationbox">
+	<splitter id="dtSplitter" style="display:none"/>
+	<label id="dtPlacer" value="Loading...?" style="display:none"/>
+</notificationbox>-->
+</overlay>
