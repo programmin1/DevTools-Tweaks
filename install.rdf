@@ -8,6 +8,8 @@
     <em:creator>Luke Bryan</em:creator>
 
     <em:description>Modifications for Firefox Devtools. Adds Edit Html, New Rule and Open URL to the inspector. Adds JSON parser to network view in Web Console, and makes the top tabs smaller.</em:description>
+    <em:type>2</em:type>
+    <em:unpack>true</em:unpack>
 
     <em:targetApplication> <!-- Works with Firefox -->
       <Description>
@@ -16,5 +18,5 @@
         <em:maxVersion>21.0</em:maxVersion>
       </Description>
     </em:targetApplication>
-
+  </Description>
 </RDF>
