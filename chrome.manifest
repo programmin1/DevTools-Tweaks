@@ -3,8 +3,10 @@ style chrome://browser/content/devtools/framework/toolbox.xul chrome://devtooltw
 overlay chrome://browser/content/devtools/framework/toolbox.xul chrome://devtooltweaks/content/toolboxOverlay.xul
 
 overlay chrome://browser/content/devtools/inspector/inspector.xul  chrome://devtooltweaks/content/inspectorOverlay.xul
+style chrome://browser/content/devtools/inspector/inspector.xul    chrome://devtooltweaks/content/inspectorCss.css
+
 overlay chrome://browser/content/devtools/cssruleview.xul  chrome://devtooltweaks/content/cssInspectorOverlay.xul
 
 overlay chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/netWinOverlay.xul
 
-chrome://browser/content/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
+overlay chrome://browser/content/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul

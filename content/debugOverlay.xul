@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay id="dtDebugOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<hbox id="debugger-controls">
+	<toolbarbutton class="devtools-toolbarbutton" oncommand="dt.breakpointToggle()"
+	tooltiptext="Toggle breakpoints" position="1"
+	style="list-style-image:url(chrome://devtooltweaks/content/img/debugger-breakpoints.png)"></toolbarbutton>
+</hbox>
 <script type="text/javascript" src="chrome://devtooltweaks/content/debugOverlay.js"></script>
 </overlay>
