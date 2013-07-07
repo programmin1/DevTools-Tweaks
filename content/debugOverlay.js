@@ -19,6 +19,9 @@ debug_tweak.setup = function() {
 debug_tweak.setup();*/
 var dt = dt || {};
 
+/**
+ * Clicks the element
+ */
 dt.click = function(el) {
 	var evt = document.createEvent("MouseEvents");
 	evt.initMouseEvent("click", true, true, window,
@@ -26,10 +29,16 @@ dt.click = function(el) {
 	el.dispatchEvent(evt);
 }
 
+/**
+ * Gets the checkbox within breakpoint ui element
+ */
 dt.getCheck = function(el) {
 	return (el.children[0].nodeName=='checkbox') ? el.children[0] : el.children[0].children[0];
 }
 
+/**
+ * All Breakpoints toggler
+ */
 dt.breakpointToggle = function() {
 	var breakpoints = document.getElementsByClassName('dbg-breakpoint');
 	var hasBreak = false;
@@ -62,3 +71,21 @@ dt.breakpointToggle = function() {
 	//to do something with window.DebuggerView.WatchExpressions.getItemForElement
 	// and add ability to highlight the watched elements from the watch panel.
 };
+
+/* We can get the selection here, but not evaluate it in context and show in tooltip?
+
+dt._onEditorLoad = function({ detail: editor }) {
+	var doc = editor.editorElement.contentDocument;
+	doc.addEventListener('mouseup',function(e) {
+		e.preventDefault();
+		// The actual content is in editor-id's child, within editor-id's child.
+		var sel = doc.getElementById('editor').children[0].contentDocument.getSelection();
+		dump('sel:'+sel);
+		var res = StackFrames.evaluate(''+sel);
+		dump(res);
+	});
+	//editor.addEventListener("Selection", this._onEditorSelection, false);
+	//editor.addEventListener("ContextMenu", this._onEditorContextMenu, false);
+};
+window.addEventListener("Debugger:EditorLoaded", dt._onEditorLoad, false);
+*/

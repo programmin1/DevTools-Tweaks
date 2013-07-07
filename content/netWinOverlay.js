@@ -45,6 +45,8 @@ WebConsoleFrame.prototype.openNetworkPanel = function WCF_openNetworkPanel(aNode
 	return netPanel;
 }
 
+//window.hud.owner.getDebuggerFrames();
+
 var netWinTweak = netWinTweak || {};
 // From http://stackoverflow.com/questions/4810841/json-pretty-print-using-javascript
 netWinTweak.syntaxHighlight = function(json) {

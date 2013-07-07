@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay id="dtToolbarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 <!-- currently broken, this would add a 'split panel' checkbox to show web console always:
+Can't even find the on-tab-load event here :(
 <script src="chrome://devtooltweaks/content/toolboxOverlay.js"></script>
 
 <notificationbox id="toolbox-notificationbox">

@@ -10,3 +10,5 @@ overlay chrome://browser/content/devtools/cssruleview.xul  chrome://devtooltweak
 overlay chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/netWinOverlay.xul
 
 overlay chrome://browser/content/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
+# new in FX23:
+overlay chrome://browser/content/devtools/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul

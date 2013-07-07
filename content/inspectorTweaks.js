@@ -151,7 +151,8 @@ dt.newRule = function(e) {
 		}
 	}
 }
-
+// window.inspector is documented in inspector-panel.js
+// .doc and window is inspector.xul window.
 window.addEventListener('load',function() {
 	var frame = document.getElementsByClassName('iframe-ruleview')[0];
 	if (!frame.contentWindow.location.href.contains('cssruleview.xul')) {
@@ -159,15 +160,17 @@ window.addEventListener('load',function() {
 		frame.setAttribute('context',"dtCSSContext");
 	}
 	function styleit() {
-		
-	var frame = document.getElementById('markup-box').children[0];
+		var frame = document.getElementById('markup-box').children[0];
 		var doc = frame.contentDocument;
 		var style= doc.createElement('style');
 		style.appendChild(doc.createTextNode(
-		'.theme-selected {/*background-color:rgb(189,189,189) !important;*/ border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'
+		'.theme-selected { border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'+
+		'.theme-twisty:not([open]) {top:5px; left:5px;}'
 		));
 		doc.body.appendChild(style);//what's the equivalent for old xul file?
 	}
 	styleit();
+	window.inspector.on("markuploaded", styleit);
 	frame.addEventListener('load',styleit);
+	//frame.contentWindow.addEventListener('load',styleit);
 });
