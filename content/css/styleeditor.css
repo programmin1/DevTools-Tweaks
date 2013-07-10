@@ -1,0 +1,8 @@
+/*hgroup.stylesheet-info * {
+	-moz-user-focus: normal;
+	-moz-user-select: all;
+}*/
+
+#style-editor-chrome .splitview-controller {
+	max-width: 2000px;
+}
