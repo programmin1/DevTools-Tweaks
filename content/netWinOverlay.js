@@ -40,6 +40,37 @@ WebConsoleFrame.prototype.openNetworkPanel = function WCF_openNetworkPanel(aNode
 				}
 			});
 		}
+		
+		//pretty-print-able post requests:
+		var reqEl = doc.getElementById('requestBodyContent');
+		if (reqEl) {
+			//http://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript
+			function escapeHtml(unsafe) {
+				return unsafe
+					 .replace(/&/g, "&amp;")
+					 .replace(/</g, "&lt;")
+					 .replace(/>/g, "&gt;")
+					 .replace(/"/g, "&quot;")
+					 .replace(/'/g, "&#039;");
+			}
+			var makelist = doc.createElement('button');
+			makelist.appendChild(doc.createTextNode('Make List'));
+			reqEl.previousElementSibling.appendChild(makelist);
+			makelist.addEventListener('click',function() {
+				if (!reqEl.hasAttribute('data-done')) {
+					var items = reqEl.textContent.split('&'),
+						output = '';
+					for (var i=0; i<items.length; i++) {
+						var spl = items[i].indexOf('=');
+						output += '<b>'+
+						escapeHtml(unescape(items[i].substr(0,spl)))+'</b>'
+						+escapeHtml(unescape(items[i].substr(spl)))+'<br/>';
+					}
+					reqEl.innerHTML=output;
+				}
+				reqEl.setAttribute('data-done','yes');
+			});
+		}
 	},true);
 	
 	return netPanel;
