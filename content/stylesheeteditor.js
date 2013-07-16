@@ -10,6 +10,7 @@ document.addEventListener('mousedown',function(e) {
 				var ioService = Components.classes["@mozilla.org/network/io-service;1"]
 					.getService(Components.interfaces.nsIIOService);
 				// Devtools main window has reference to its window.
+				// TODO: window.parent.content not helpful, when not docked in window.
 				var baseURI = ioService.newURI(window.parent.content.location.href, null, null);
 				cssurl = ioService.newURI(cssurl, null, baseURI).spec;
 			}

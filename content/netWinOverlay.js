@@ -3,6 +3,9 @@
  * by Luke Bryan
  * Portions based on Firefox DevTools code.
  * Released under MPL
+ * 
+ * Web Console module - improves network panel.
+ * 
  */
 WebConsoleFrame.prototype.origOpenNP = WebConsoleFrame.prototype.openNetworkPanel;
 WebConsoleFrame.prototype.openNetworkPanel = function WCF_openNetworkPanel(aNode, aHttpActivity) {
@@ -34,7 +37,8 @@ WebConsoleFrame.prototype.openNetworkPanel = function WCF_openNetworkPanel(aNode
 						var resp = respDiv.children[i].textContent;
 						let obj = JSON.parse(resp);
 						let str = JSON.stringify(obj, undefined, 4);
-						respDiv.children[i].innerHTML = window.netWinTweak.syntaxHighlight(str);
+						respDiv.children[i].innerHTML = '<iframe type="content" src="about:blank" style="height:300px;width:100%;border:none;"/>';
+						respDiv.children[i].children[0].contentDocument.write('<style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str));
 						break;
 					}
 				}
@@ -66,7 +70,8 @@ WebConsoleFrame.prototype.openNetworkPanel = function WCF_openNetworkPanel(aNode
 						escapeHtml(unescape(items[i].substr(0,spl)))+'</b>'
 						+escapeHtml(unescape(items[i].substr(spl)))+'<br/>';
 					}
-					reqEl.innerHTML=output;
+					reqEl.innerHTML='<iframe type="content" src="about:blank" style="height:300px;width:100%;border:none;"/>';
+					reqEl.children[0].contentDocument.write('<style> * {font-size:12px;}</style>'+output);
 				}
 				reqEl.setAttribute('data-done','yes');
 			});
@@ -104,3 +109,8 @@ netWinTweak.syntaxHighlight = function(json) {
         return '<span class="' + cls + '">' + match + '</span>';
     })+'</pre>';
 }
+
+/*window.addEventListener('load',function() {
+	dump('hello');
+	//breakpoint here to look for objects to use
+})*/
