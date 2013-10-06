@@ -1,0 +1,86 @@
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:h="http://www.w3.org/1999/xhtml">
+<script type="text/javascript">
+<![CDATA[
+console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
+
+function addlog(output) {
+	document.getElementById('out').value += "\n"+output;
+}
+
+/**
+ * Compare 2 dom nodes
+ * Given A node, identifier, B node, identifier.
+ */
+function compare(A,Aid,B,Bid,godeep) {
+	if (A.nodeName != B.nodeName) {
+		addlog(Aid+' is <'+A.nodeName+'>, '+Bid+' is <'+B.nodeName+'>.');
+	}
+	for (var a=0; a<A.attributes.length; a++) {
+		//var bsame = false;
+		for (var b=0; b<B.attributes.length; b++) {
+			console.log("a is",A);
+			console.log("b is",B);
+			if (A.attributes[a].name ==B.attributes[b].name &&
+			    A.attributes[a].value != B.attributes[b].value)
+			    addlog(Aid+' has '+A.attributes[a].name+'='+A.attributes[a].value);
+			    addlog(Bid+' has '+B.attributes[b].name+'='+B.attributes[b].value);
+		}
+		//if (!bsame) {
+			//addlog("A has attr "+A.attributes[a].name+'='+A.attributes[a].value);
+		//}
+	}
+	
+	var cssA = A.ownerDocument.defaultView.getComputedStyle(A),
+	    cssB = B.ownerDocument.defaultView.getComputedStyle(B);
+	for (var i=0; i<cssA.length; i++) {
+		if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
+			//addlog(cssA[i]+' differs.');
+			addlog(Aid+' css '+cssA[i]+'='+cssA.getPropertyValue(cssA[i]));
+			addlog(Bid+' css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
+			//console.log(css[i] +'='+css.getPropertyValue(""+css[i]))
+		}
+	}
+	if (A.children.length != B.children.length) {
+		addlog(Aid+' has '+A.children.length+' children, '+Bid+' has '+B.children.length);
+	}
+	if (godeep > 0) {
+		for (let i=0; i<A.children.length; i++) {
+			if (i< B.children.length) { //compare it
+				compare(A.children[i], Aid+'.children['+i+']',
+						B.children[i], Bid+'.children['+i+']')
+			}
+		}
+	}
+}
+
+window.onload = function() {
+	if (window.arguments[0]) {
+		var a=window.arguments[0].A,
+			b=window.arguments[0].B;
+		document.title = "compare";
+		compare(a,'A', b,'B',0);
+	}
+}
+
+function comparePressed() {
+	let depth = document.getElementById('depth').value;
+	console.log(depth);
+	document.getElementById('out').value="";
+	compare(window.arguments[0].A,'A',
+	        window.arguments[0].B,'B',
+	        depth)
+}
+]]>
+</script>
+<vbox flex="1">
+	<hbox>
+		<label value="Depth"/>
+		<textbox id="depth" value="1"/>
+		<button label="Compare" oncommand="comparePressed()"/>
+	</hbox>
+	<vbox flex="1">
+		<textbox id="out" multiline="true" flex="1"/>
+	</vbox>
+</vbox>
+</window>

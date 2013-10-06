@@ -5,7 +5,7 @@
  * Released under MPL
  */
 
-//There is no right click menu to extend in Firefox 22 beta, these are workarounds:
+//There is no right click menu to extend in Firefox 22+, these are workarounds:
 var dt = dt || {};
 dt.editHtml = function() {
 	inspector.tweak_editHtml = function() {
@@ -24,7 +24,7 @@ dt.editHtml = function() {
 			
 			var toCopy = {src:''+this.selection.node.innerHTML, title:title};
 			window.openDialog("chrome://devtooltweaks/content/editDialog.xul",
-			"devtoolTweakEdit", "chrome,centerscreen,modal", /*args:*/
+			"devtoolTweakEdit", "chrome,centerscreen,modal,resizable", /*args:*/
 			toCopy);
 			if (typeof toCopy.src=='string') {
 				this.selection.node.innerHTML = toCopy.src;
@@ -46,6 +46,23 @@ dt.editHtml = function() {
 	inspector.tweak_editHtml();
 }
 //Context menu events:
+dt.setA = function() {
+	if (!inspector.selection.isNode()) return;
+	
+	dt.cmpA = inspector.selection.node.cloneNode(true);
+}
+dt.setB = function() {
+	if (!inspector.selection.isNode()) return;
+	if (!dt.cmpA) {
+		alert("Please choose element A first.");
+		return;
+	}
+	
+	dt.cmpB = inspector.selection.node;
+	window.openDialog("chrome://devtooltweaks/content/compareNodes.xul",
+		"devtoolTweakCmp", "chrome,centerscreen,resizable", /*args:*/
+			{A:dt.cmpA, B:dt.cmpB});
+}
 
 dt.copySelection = function(e) {
 	var doc = document.popupNode.ownerDocument.defaultView;
@@ -174,3 +191,21 @@ window.addEventListener('load',function() {
 	frame.addEventListener('load',styleit);
 	//frame.contentWindow.addEventListener('load',styleit);
 });
+
+dt.changeInlineEdit = function(e) {
+	dump(e.target.getAttribute('class'));
+	if (e.target.classList.contains('ruleview-propertyvalue')) {
+		window.setTimeout(function() {
+			//Should be converted to inplaceEditor now.
+			dump('click');
+			var ed = e.target.inplaceEditor;
+		},1);
+	}
+	
+	//if (e.target.nodeName=='input' && e.target.inplaceEditor) {
+	//	var ed = e.target.inplaceEditor;
+	//}
+}
+//Catch click or enter on the rule edit span:
+window.addEventListener('keypress',dt.changeInlineEdit);
+window.addEventListener('mouseup', dt.changeInlineEdit);
