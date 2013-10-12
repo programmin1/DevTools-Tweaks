@@ -10,35 +10,42 @@ function addlog(output) {
 
 /**
  * Compare 2 dom nodes
- * Given A node, identifier, B node, identifier.
+ * Given A node, identifier, B node, identifier, depth.
  */
 function compare(A,Aid,B,Bid,godeep) {
 	if (A.nodeName != B.nodeName) {
 		addlog(Aid+' is <'+A.nodeName+'>, '+Bid+' is <'+B.nodeName+'>.');
 	}
-	for (var a=0; a<A.attributes.length; a++) {
-		//var bsame = false;
-		for (var b=0; b<B.attributes.length; b++) {
-			console.log("a is",A);
-			console.log("b is",B);
-			if (A.attributes[a].name ==B.attributes[b].name &&
-			    A.attributes[a].value != B.attributes[b].value)
-			    addlog(Aid+' has '+A.attributes[a].name+'='+A.attributes[a].value);
-			    addlog(Bid+' has '+B.attributes[b].name+'='+B.attributes[b].value);
+	for (let a=0; a<A.attributes.length; a++) {
+		let key = A.attributes[a].name,
+		    other = B.attributes[key];
+		if (other !== undefined) {//both have attr.
+			if (A.attributes[a].value != other.value) {
+				addlog(Aid+' has attr '+key+'='+A.attributes[key].value);
+				addlog(Bid+' has attr '+key+'='+B.attributes[key].value);
+			}
+		} else {
+			addlog(Aid+' has attr '+key+'='+A.attributes[key].value+', not in other el.')
 		}
-		//if (!bsame) {
-			//addlog("A has attr "+A.attributes[a].name+'='+A.attributes[a].value);
-		//}
 	}
-	
-	var cssA = A.ownerDocument.defaultView.getComputedStyle(A),
-	    cssB = B.ownerDocument.defaultView.getComputedStyle(B);
-	for (var i=0; i<cssA.length; i++) {
+	//Also check for the other's unique attr:
+	for (let b=0; b<B.attributes.length; b++) {
+		let key = B.attributes[b].name,
+		    other = A.attributes[key];
+		if (other === undefined) {
+			addlog(Bid+' has attr '+key+'='+A.attributes[key].value+', not in other el.')
+		}
+	}
+	//TODO: Why does this not work correctly for styles? height and other attributes are not the same
+	// when comparing the same element to itself.
+	var cssA = A.ownerDocument.defaultView.getComputedStyle(A,null),
+	    cssB = B.ownerDocument.defaultView.getComputedStyle(B,null);
+	console.log(cssA);
+	console.log(cssB);
+	for (let i=0; i<cssA.length; i++) {
 		if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
-			//addlog(cssA[i]+' differs.');
 			addlog(Aid+' css '+cssA[i]+'='+cssA.getPropertyValue(cssA[i]));
 			addlog(Bid+' css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
-			//console.log(css[i] +'='+css.getPropertyValue(""+css[i]))
 		}
 	}
 	if (A.children.length != B.children.length) {
