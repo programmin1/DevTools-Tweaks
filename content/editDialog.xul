@@ -33,7 +33,7 @@ function wwchange(e) {
 		<checkbox id="ww" label="Word Wrap" checked="true" onchange="alert(1); return wwchange(event)"/>
 		-->
 		<button label="Save Changes" oncommand="save()"/>
-		<label value="Warning: changing the innerHTML will remove event listeners!" />
+		<label value="Warning: changing the innerHTML may remove event listeners!" />
 	</hbox>
 </vbox>
 </window>

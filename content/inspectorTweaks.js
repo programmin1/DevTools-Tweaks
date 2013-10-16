@@ -170,11 +170,11 @@ dt.newRule = function(e) {
 }
 // window.inspector is documented in inspector-panel.js
 // .doc and window is inspector.xul window.
-window.addEventListener('load',function() {
+window.addEventListener('pageshow',function() {
 	var frame = document.getElementsByClassName('iframe-ruleview')[0];
 	if (!frame.contentWindow.location.href.contains('cssruleview.xul')) {
 		//Not the xul, it's a html we have to extend from here (Firefox 22+)
-		frame.setAttribute('context',"dtCSSContext");
+		frame.setAttribute('context',"dtCSSContext");//For right click overlay
 	}
 	function styleit() {
 		var frame = document.getElementById('markup-box').children[0];
@@ -185,6 +185,17 @@ window.addEventListener('load',function() {
 		'.theme-twisty:not([open]) {top:5px; left:5px;}'
 		));
 		doc.body.appendChild(style);//what's the equivalent for old xul file?
+		
+		/*where is ruleview InplaceEditor?
+		InplaceEditor.prototype._orig_createInput = InplaceEditor.prototype._createInput;
+		InplaceEditor.prototype._createInput = function() {
+			InplaceEditor.prototype._orig_createInput.call(this);//original in this context.
+			//After creating:
+			this.input.addEventListener('click',function() {
+				console.log('inplace');
+				console.log(this.input);
+			})
+		}*/
 	}
 	styleit();
 	window.inspector.on("markuploaded", styleit);
@@ -193,13 +204,47 @@ window.addEventListener('load',function() {
 });
 
 dt.changeInlineEdit = function(e) {
-	dump(e.target.getAttribute('class'));
-	if (e.target.classList.contains('ruleview-propertyvalue')) {
-		window.setTimeout(function() {
+	if (e.target.nodeName=='input' && e.target.classList.contains('styleinspector-propertyeditor')) {
+		//e.target.classList.contains('ruleview-propertyvalue')) {
+		console.log(e.target)
+		var sel = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd);
+		//alert(sel)
+		var doc = e.target.ownerDocument
+		  , slider = doc.createElement('div')
+		  , picker = doc.createElement('div')
+		slider.setAttribute('class','mySlider');
+		picker.setAttribute('class','myPicker');
+		doc.documentElement.appendChild(slider)
+		doc.documentElement.appendChild(picker)
+		var doc=picker.ownerDocument;
+		var style= doc.createElement('style');
+			style.appendChild(doc.createTextNode(
+			'.myPicker {  position:fixed; top:10px; left:5px;  width: 200px; height: 200px   }'+
+			'.mySlider {   position:fixed; top:10px; left:210px;  width: 30px; height: 200px }'
+			));
+		doc.documentElement.appendChild(style);
+		ColorPicker( slider, picker, function(hex, hsv, rgb) {
+			e.target.value = hex;
+			console.log(hex);
+		})
+		
+		return false;
+		/*window.setTimeout(function() {
 			//Should be converted to inplaceEditor now.
-			dump('click');
+			//See https://hg.mozilla.org/integration/fx-team/file/672608b227c3/browser/devtools/shared/InplaceEditor.jsm
+			console.log('inlineedit');
 			var ed = e.target.inplaceEditor;
-		},1);
+			var fxCreate = ed._createInput;
+			console.log(ed)
+			ed._createInput = function() {
+				
+				fxCreate.call(this);
+				//After creating:
+				this.input.addEventListener('click',function() {
+					console.log('inplace');
+				})
+			}
+		},10);*/
 	}
 	
 	//if (e.target.nodeName=='input' && e.target.inplaceEditor) {
@@ -207,5 +252,5 @@ dt.changeInlineEdit = function(e) {
 	//}
 }
 //Catch click or enter on the rule edit span:
-window.addEventListener('keypress',dt.changeInlineEdit);
-window.addEventListener('mouseup', dt.changeInlineEdit);
+//window.addEventListener('keypress',dt.changeInlineEdit);
+window.addEventListener('dblclick', dt.changeInlineEdit);

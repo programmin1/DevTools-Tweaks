@@ -29,6 +29,7 @@
       <menuitem label="New Rule..." accesskey="N" oncommand="dt.newRule()"/>
     </menupopup>
   </popupset>
-
+  
+<script src="chrome://devtooltweaks/content/lib/FlexiColorPicker.js"></script>
 <script src="chrome://devtooltweaks/content/inspectorTweaks.js"></script>
 </overlay>
