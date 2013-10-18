@@ -204,47 +204,66 @@ window.addEventListener('pageshow',function() {
 });
 
 dt.changeInlineEdit = function(e) {
+	function insertAfter(referenceNode, newNode) {
+		referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+	}
+	//console.log(sel);
 	if (e.target.nodeName=='input' && e.target.classList.contains('styleinspector-propertyeditor')) {
-		//e.target.classList.contains('ruleview-propertyvalue')) {
-		console.log(e.target)
 		var sel = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd);
-		//alert(sel)
-		var doc = e.target.ownerDocument
-		  , slider = doc.createElement('div')
-		  , picker = doc.createElement('div')
-		slider.setAttribute('class','mySlider');
-		picker.setAttribute('class','myPicker');
-		doc.documentElement.appendChild(slider)
-		doc.documentElement.appendChild(picker)
-		var doc=picker.ownerDocument;
-		var style= doc.createElement('style');
-			style.appendChild(doc.createTextNode(
-			'.myPicker {  position:fixed; top:10px; left:5px;  width: 200px; height: 200px   }'+
-			'.mySlider {   position:fixed; top:10px; left:210px;  width: 30px; height: 200px }'
-			));
-		doc.documentElement.appendChild(style);
-		ColorPicker( slider, picker, function(hex, hsv, rgb) {
-			e.target.value = hex;
-			console.log(hex);
-		})
-		
-		return false;
-		/*window.setTimeout(function() {
-			//Should be converted to inplaceEditor now.
-			//See https://hg.mozilla.org/integration/fx-team/file/672608b227c3/browser/devtools/shared/InplaceEditor.jsm
-			console.log('inlineedit');
-			var ed = e.target.inplaceEditor;
-			var fxCreate = ed._createInput;
-			console.log(ed)
-			ed._createInput = function() {
-				
-				fxCreate.call(this);
-				//After creating:
-				this.input.addEventListener('click',function() {
-					console.log('inplace');
-				})
+		if (sel.match(/^[0-9a-f]{3,6}$/i) || sel=='rgb') {//Selected a color
+			var doc = e.target.ownerDocument
+			  , ed = e.target.inplaceEditor
+			  , overlay = doc.createElement('div')
+			  , container = doc.createElement('div')
+				, slider = doc.createElement('div')
+				, picker = doc.createElement('div')
+			overlay.setAttribute('class','over');
+			container.setAttribute('class','cp-default');//matching colorpicker.css
+			slider.setAttribute('class','slide');
+			picker.setAttribute('class','picker');
+			insertAfter(e.target, container);
+			container.appendChild(slider)
+			container.appendChild(picker)
+			var doc=picker.ownerDocument;
+			var style= doc.createElement('link');
+			style.setAttribute('href','chrome://devtooltweaks/content/lib/colorpicker.css');
+			style.setAttribute('rel','stylesheet')
+			doc.documentElement.appendChild(style);
+			doc.documentElement.appendChild(overlay);
+			
+			ed._fx_clear = ed._clear;
+			ed._clear = function() {//Don't clear yet...
 			}
-		},10);*/
+			ColorPicker( slider, picker, function(hex, hsv, rgb) {
+				e.target.value = hex;
+				var evt = document.createEvent("KeyEvents");
+				evt.initEvent("keyup", true, true);
+				e.target.dispatchEvent(evt);//make it update
+			})
+			overlay.addEventListener('click',function() {
+				ed._clear = ed._fx_clear;//make clearable, cleanup:
+				overlay.parentNode.removeChild(overlay);
+				container.parentNode.removeChild(container);
+			})
+			
+			return false;
+			/*window.setTimeout(function() {
+				//Should be converted to inplaceEditor now.
+				//See https://hg.mozilla.org/integration/fx-team/file/672608b227c3/browser/devtools/shared/InplaceEditor.jsm
+				console.log('inlineedit');
+				var ed = e.target.inplaceEditor;
+				var fxCreate = ed._createInput;
+				console.log(ed)
+				ed._createInput = function() {
+					
+					fxCreate.call(this);
+					//After creating:
+					this.input.addEventListener('click',function() {
+						console.log('inplace');
+					})
+				}
+			},10);*/
+		}
 	}
 	
 	//if (e.target.nodeName=='input' && e.target.inplaceEditor) {
