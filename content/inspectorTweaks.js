@@ -73,6 +73,8 @@ dt.copySelection = function(e) {
 }
 dt.getStylesheetOrUrl = function() {
 	var clicked = document.popupNode;
+	if (clicked.className && clicked.nodeName ==='a' && clicked.parentNode.classList.contains('ruleview-propertyvalue'))
+		clicked = clicked.parentNode;
 	if (clicked.className && clicked.classList.contains('ruleview-propertyvalue')) {
 		//See if this has a css url():
 		var prop = clicked.textContent;
@@ -210,7 +212,8 @@ dt.changeInlineEdit = function(e) {
 	//console.log(sel);
 	if (e.target.nodeName=='input' && e.target.classList.contains('styleinspector-propertyeditor')) {
 		var sel = e.target.value.substring(e.target.selectionStart, e.target.selectionEnd);
-		if (sel.match(/^[0-9a-f]{3,6}$/i) || sel=='rgb') {//Selected a color
+		var b4  = e.target.value.substring(e.target.selectionStart-1,e.target.selectionStart);
+		if ((sel.match(/^[0-9a-f]{3,6}$/i) && b4=='#') || sel=='rgb') {//Selected a color
 			var doc = e.target.ownerDocument
 			  , ed = e.target.inplaceEditor
 			  , overlay = doc.createElement('div')
