@@ -8,6 +8,7 @@
         oncommand="dt.editHtml()"
         position="1"/>
     <menuseparator position="2"/>
+    <!-- Experimental...
     <menuitem id="node-menu-setA"
         label="Set Node A"
         accesskey="A"
@@ -19,6 +20,7 @@
         oncommand="dt.setB()"
         position="4"/>
     <menuseparator position="5"/>
+    -->
 </menupopup>
 
   <popupset><!-- shown in Fx22+ -->
