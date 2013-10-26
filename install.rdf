@@ -4,10 +4,10 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>devtooltweaks@Luke.Bryan</em:id>
     <em:name>DevTools Tweaks</em:name>
-    <em:version>0.4</em:version>
+    <em:version>0.4.1</em:version>
     <em:creator>Luke Bryan</em:creator>
     <em:description>Modifications for Firefox Devtools. Adds Edit Html, New Rule and Open URL to the inspector.
-    Adds JSON parser and POST listing functionality to network view in Web Console (Firefox 21-24), and makes the top tabs smaller.
+    Adds JSON parser and POST listing functionality to network view in Web Console, and makes the top tabs smaller.
     Adds double-click color picker in CSS inspector (using David Durman's FlexiColorPicker).</em:description>
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
