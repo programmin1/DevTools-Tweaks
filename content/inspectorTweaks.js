@@ -184,8 +184,10 @@ window.addEventListener('pageshow',function() {
 		var style= doc.createElement('style');
 		style.appendChild(doc.createTextNode(
 		'.theme-selected { border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'+
+		'.highlighter.theme-selected {padding:0;margin-top:-1px;} li.child{margin-top:2px; margin-bottom:2px;}'+
 		'.theme-twisty:not([open]) {top:5px; left:5px;}'
 		));
+		//  ^ .highlighter.theme-selected is for Fx26, adjusting full-line spacing and selection border.
 		doc.body.appendChild(style);//what's the equivalent for old xul file?
 		
 		/*where is ruleview InplaceEditor?
