@@ -45,8 +45,13 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 							var resp = respDiv.children[i].textContent;
 							let obj = JSON.parse(resp);
 							let str = JSON.stringify(obj, undefined, 4);
-							respDiv.children[i].innerHTML = '<iframe type="content" src="about:blank" style="height:300px;width:100%;border:none;"/>';
-							respDiv.children[i].children[0].contentDocument.write('<style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str));
+							var iframe = document.createElement('iframe');
+							//https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
+							iframe.setAttribute('type','content');
+							iframe.setAttribute('style','height:300px;width:100%;border:none;');
+							iframe.setAttribute('src','data:text/html,' + 
+								encodeURIComponent('<style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str));
+							respDiv.children[i].appendChild(iframe);
 							break;
 						}
 					}
@@ -78,8 +83,15 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 							escapeHtml(unescape(items[i].substr(0,spl)))+'</b>'
 							+escapeHtml(unescape(items[i].substr(spl)))+'<br/>';
 						}
-						reqEl.innerHTML='<iframe type="content" src="about:blank" style="height:300px;width:100%;border:none;"/>';
-						reqEl.children[0].contentDocument.write('<style> * {font-size:12px;}</style>'+output);
+						let str = JSON.stringify(obj, undefined, 4)
+						,   iframe = document.createElement('iframe');
+						//Add safely as described here:https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
+						iframe.setAttribute('type','content');
+						iframe.setAttribute('style','height:300px;width:100%;border:none;');
+						iframe.setAttribute('src','data:text/html,' + 
+							encodeURIComponent('<style> * {font-size:12px;}</style>'+output);
+						reqEl.innerHTML='';
+						reqEl.appendChild(iframe);
 					}
 					reqEl.setAttribute('data-done','yes');
 				});
