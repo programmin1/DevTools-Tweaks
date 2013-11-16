@@ -45,12 +45,13 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 							var resp = respDiv.children[i].textContent;
 							let obj = JSON.parse(resp);
 							let str = JSON.stringify(obj, undefined, 4);
+							respDiv.children[i].innerHTML = '';
 							var iframe = document.createElement('iframe');
 							//https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
 							iframe.setAttribute('type','content');
-							iframe.setAttribute('style','height:300px;width:100%;border:none;');
+							iframe.setAttribute('style','height:300px;width:100%;border:none;background:#FFF;');
 							iframe.setAttribute('src','data:text/html,' + 
-								encodeURIComponent('<style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str));
+								encodeURIComponent('<body style="background:#FFF;"><style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str)+'</body>'));
 							respDiv.children[i].appendChild(iframe);
 							break;
 						}
@@ -83,13 +84,12 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 							escapeHtml(unescape(items[i].substr(0,spl)))+'</b>'
 							+escapeHtml(unescape(items[i].substr(spl)))+'<br/>';
 						}
-						let str = JSON.stringify(obj, undefined, 4)
-						,   iframe = document.createElement('iframe');
+						let iframe = document.createElement('iframe');
 						//Add safely as described here:https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
 						iframe.setAttribute('type','content');
-						iframe.setAttribute('style','height:300px;width:100%;border:none;');
+						iframe.setAttribute('style','height:300px;width:100%;border:none;background:#FFF;');
 						iframe.setAttribute('src','data:text/html,' + 
-							encodeURIComponent('<style> * {font-size:12px;}</style>'+output);
+							encodeURIComponent('<body style="background:#FFF;"><style> * {font-size:12px;}</style>'+output+'</body>'));
 						reqEl.innerHTML='';
 						reqEl.appendChild(iframe);
 					}
