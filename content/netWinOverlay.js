@@ -23,7 +23,10 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 		netPanel.iframe.addEventListener('load',function(event) {
 			//for(a in netPanel.iframe) {dump(a+"\n");}
 			var doc = event.originalTarget;
-			doc.body.style.backgroundColor='rgb(85,87,128)';
+			if (doc.location.protocol != "data:") {
+				//Not the generated frames, the outer frame. Color:
+				doc.body.style.backgroundColor='rgb(85,87,128)';
+			}
 			var respDiv = doc.getElementById('responseBody');
 			if (!respDiv) {
 				respDiv = doc.getElementById('responseBodyCached');
@@ -49,9 +52,9 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 							var iframe = document.createElement('iframe');
 							//https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
 							iframe.setAttribute('type','content');
-							iframe.setAttribute('style','height:300px;width:100%;border:none;background:#FFF;');
+							iframe.setAttribute('style','height:300px;width:100%;border:none');
 							iframe.setAttribute('src','data:text/html,' + 
-								encodeURIComponent('<body style="background:#FFF;"><style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str)+'</body>'));
+								encodeURIComponent('<html><body><style> * {font-size:12px;}</style>'+window.netWinTweak.syntaxHighlight(str)+'</body></html>'));
 							respDiv.children[i].appendChild(iframe);
 							break;
 						}
@@ -87,9 +90,9 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 						let iframe = document.createElement('iframe');
 						//Add safely as described here:https://developer.mozilla.org/en-US/docs/Displaying_web_content_in_an_extension_without_security_issues
 						iframe.setAttribute('type','content');
-						iframe.setAttribute('style','height:300px;width:100%;border:none;background:#FFF;');
+						iframe.setAttribute('style','height:300px;width:100%;border:none;');
 						iframe.setAttribute('src','data:text/html,' + 
-							encodeURIComponent('<body style="background:#FFF;"><style> * {font-size:12px;}</style>'+output+'</body>'));
+							encodeURIComponent('<html><body><style> * {font-size:12px;}</style>'+output+'</body></html>'));
 						reqEl.innerHTML='';
 						reqEl.appendChild(iframe);
 					}
