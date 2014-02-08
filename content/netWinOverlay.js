@@ -7,11 +7,15 @@
  * Web Console module - improves network panel.
  * 
  */
+(function(){
+
+ 
 if (typeof WebConsoleFrame === 'undefined') {
-	//console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
+	console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
 	
 	var {devtools} = Components.utils.import("resource://gre/modules/devtools/Loader.jsm", {});
 	var {WebConsoleFrame} = devtools.require("devtools/webconsole/webconsole");
+	// ^ accesses fx/modules/devtools/devtools/webconsole/webconsole.js.
 }
 
 if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
@@ -133,8 +137,73 @@ if (typeof WebConsoleFrame.prototype.origOpenNP == 'undefined') {
 		})+'</pre>';
 	}
 
+	//Modify the result of createMessageNode:
+  /** (from Firefox source:)
+   * Given a category and message body, creates a DOM node to represent an
+   * incoming message. The timestamp is automatically added.
+   *
+   * @param number aCategory
+   *        The category of the message: one of the CATEGORY_* constants.
+   * @param number aSeverity
+   *        The severity of the message: one of the SEVERITY_* constants;
+   * @param string|nsIDOMNode aBody
+   *        The body of the message, either a simple string or a DOM node.
+   * @param string aSourceURL [optional]
+   *        The URL of the source file that emitted the error.
+   * @param number aSourceLine [optional]
+   *        The line number on which the error occurred. If zero or omitted,
+   *        there is no line number associated with this message.
+   * @param string aClipboardText [optional]
+   *        The text that should be copied to the clipboard when this node is
+   *        copied. If omitted, defaults to the body text. If `aBody` is not
+   *        a string, then the clipboard text must be supplied.
+   * @param number aLevel [optional]
+   *        The level of the console API message.
+   * @param number aTimeStamp [optional]
+   *        The timestamp to use for this message node. If omitted, the current
+   *        date and time is used.
+   * @return nsIDOMNode
+   *         The message node: a DIV ready to be inserted into the Web Console
+   *         output node.
+   */
+	WebConsoleFrame.prototype.origCreateMsg = WebConsoleFrame.prototype.createMessageNode;
+	WebConsoleFrame.prototype.createMessageNode = 
+	function(aCategory, aSeverity, aBody, aSourceURL, aSourceLine, aClipboardText, aLevel, aTimeStamp) {
+		let res = WebConsoleFrame.prototype.origCreateMsg.call(this,
+		aCategory, aSeverity, aBody, aSourceURL, aSourceLine, aClipboardText, aLevel, aTimeStamp)
+		// ^ original was called with expected params.
+		
+		var doc = res.ownerDocument
+		,	newspan = doc.createElement('span');
+		newspan.textContent = ':'+aCategory+','+aClipboardText;
+		if (aCategory==5) {
+			var thing = res._variablesView;
+			/*for (i in res._variablesView) {
+				console.log(res._variablesView[i]);
+			}*/
+			//console.log(res._variablesView.controller)//.controller.getObjectClient())
+		}
+		res.children[2].appendChild(newspan);
+		
+		//if (res.children[2].textContent != '"logged."')
+		//	console.log(res.children[2]);//the body devtools-monospace, main text
+		/**  ^
+		 *   |
+		 * 
+		 * As of Fx 27, as seen in Browser console, result will be div containing:
+		 * <span class="timestamp devtools-monospace"> with time, </span>
+		 * <span class="icon"></span>
+		 * <span class="body devtools-monospace"><a>(link</a></span>
+		 * <span class="repeats"></span>
+		 * <span class="location devtools-monospace"></span>
+		 */
+		return res;
+	}
+
 	/*window.addEventListener('load',function() {
 		dump('hello');
 		//breakpoint here to look for objects to use
 	})*/
 }
+
+}) ();//Run immediately in its own scope
