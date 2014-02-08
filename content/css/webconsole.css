@@ -1,0 +1,12 @@
+
+/* It's odd that the console doesn't highlight lines by default.
+ * Highlight them:
+ */
+#output-container >div:hover {
+	background:#C1F0F4;
+	/*transition:background 0.3s ease-in;*/
+}
+/*#output-container >div {
+	background:#000;
+	transition:background 0.3s ease-in;
+}*/

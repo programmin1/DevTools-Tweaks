@@ -16,16 +16,37 @@ toolbar.devtools-tabbar {
  height: 24px;
 }
 
+/*Make the rightmost (leftmost on mac?) icons bigger clickable area:*/
+#toolbox-controls >toolbarbutton,
+#toolbox-dock-buttons >toolbarbutton {
+	margin-left:0px;
+	margin-right:0px;
+	width:24px; /* remove 8px margin, add 8px to width. */
+}
+
 /* Hide the text, make small icons for narrow view. */
 @media only screen and (max-width:726px) {
 	#toolbox-tabs > radio.devtools-tab.toolbox-tab,
 	#toolbox-tabs .radio-label-box,
 	#toolbox-tabs .radio-label-center-box {
 		width:44px;
-		min-width:44px;
+		min-width:22px;
 	}
 	
 	#toolbox-tabs .radio-label {
+		display:none;
+	}
+	
+	/* far right icons small too: */
+	#toolbox-buttons >toolbarbutton {
+		padding-left:3px;
+		padding-right:3px;
+	}
+	
+}
+@media only screen and (max-width:400px) {
+	/* why would someone size down the window AND use responsive design? */
+	#command-button-responsive {
 		display:none;
 	}
 }

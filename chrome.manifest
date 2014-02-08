@@ -9,6 +9,7 @@ style chrome://browser/content/devtools/inspector/inspector.xul    chrome://devt
 overlay chrome://browser/content/devtools/cssruleview.xul  chrome://devtooltweaks/content/cssInspectorOverlay.xul
 
 overlay chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/netWinOverlay.xul
+style   chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/css/webconsole.css
 
 overlay chrome://browser/content/devtools/styleeditor.xul chrome://devtooltweaks/content/styleeditorOverlay.xul
 style   chrome://browser/content/devtools/styleeditor.xul chrome://devtooltweaks/content/css/styleeditor.css
