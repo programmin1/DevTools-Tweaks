@@ -1,29 +1,6 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window id="yourwindow" height="250" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:h="http://www.w3.org/1999/xhtml">
-<script type="text/javascript">
-<![CDATA[
-console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
-
-window.onload = function() {
-	var htm = document.getElementById('htm');
-	if (window.arguments[0]) {
-		htm.value = ''+window.arguments[0].src;
-		window.arguments[0].src = undefined // don't overwrite on cancel close.
-		document.title = window.arguments[0].title;
-	}
-}
-function save() {
-	var htm = document.getElementById('htm');
-	window.arguments[0].src = htm.value;
-	window.close();
-}
-
-function wwchange(e) {
-	console.log(e.target);
-	document.getElementById('htm').wrap = e.target.checked ? 'on' : 'off'
-}
-]]>
-</script>
+<script type="text/javascript" src="editDialog.js"></script>
 <vbox flex="1">
 	<vbox flex="1">
 		<textbox id="htm" multiline="true" flex="1"/>
@@ -33,6 +10,7 @@ function wwchange(e) {
 		<checkbox id="ww" label="Word Wrap" checked="true" onchange="alert(1); return wwchange(event)"/>
 		-->
 		<button label="Save Changes" oncommand="save()"/>
+		<button label="Cancel" oncommand="close()"/>
 		<label value="Warning: changing the innerHTML may remove event listeners!" />
 	</hbox>
 </vbox>

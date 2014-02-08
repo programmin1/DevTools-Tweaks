@@ -8,7 +8,6 @@
         oncommand="dt.editHtml()"
         position="1"/>
     <menuseparator position="2"/>
-    <!-- Experimental...    -->
     <menuitem id="node-menu-setA"
         label="Set Node A"
         accesskey="A"

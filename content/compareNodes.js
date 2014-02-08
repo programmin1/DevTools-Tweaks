@@ -5,11 +5,19 @@ function addlog(output) {
 	document.getElementById('out').value += output+"\n";
 }
 
+first = true;
+
 /**
  * Compare 2 dom nodes
  * Given A node, identifier, B node, identifier, depth.
  */
 function compare(A,Aid,B,Bid,godeep) {
+	if (first) {
+		document.getElementById('htmA').value = A.outerHTML;
+		document.getElementById('htmB').value = B.outerHTML;
+		first = false;
+	}
+	
 	if (A.nodeName != B.nodeName) {
 		addlog(Aid+' is <'+A.nodeName+'>, '+Bid+' is <'+B.nodeName+'>.');
 	}
@@ -33,15 +41,9 @@ function compare(A,Aid,B,Bid,godeep) {
 			addlog(Bid+' has attr '+key+'='+A.attributes[key].value+', not in other el.')
 		}
 	}
-	//TODO: Why does this not work correctly for styles? height and other attributes are not the same
-	// when comparing the same element to itself.
+	//This doesn't work with clones
 	var cssA = A.ownerDocument.defaultView.getComputedStyle(A,null),
 	    cssB = B.ownerDocument.defaultView.getComputedStyle(B,null);
-	console.log(cssA);
-	console.log(cssB);
-	
-	document.getElementById('htmA').value = A.outerHTML;
-	document.getElementById('htmB').value = B.outerHTML;
 	
 	for (let i=0; i<cssA.length; i++) {
 		if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
@@ -49,8 +51,11 @@ function compare(A,Aid,B,Bid,godeep) {
 			addlog(Bid+' css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
 		}
 	}
-	if (A.children.length != B.children.length) {
+	if (A.children.length !== B.children.length) {
 		addlog(Aid+' has '+A.children.length+' children, '+Bid+' has '+B.children.length);
+	}
+	if (A.textContent !== B.textContent) {
+		addlog(Aid+' textContent differs from '+Bid);
 	}
 	if (godeep > 0) {
 		for (let i=0; i<A.children.length; i++) {

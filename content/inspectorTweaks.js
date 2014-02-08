@@ -49,7 +49,7 @@ dt.editHtml = function() {
 dt.setA = function() {
 	if (!inspector.selection.isNode()) return;
 	
-	dt.cmpA = inspector.selection.node.cloneNode(true);
+	dt.cmpA = inspector.selection.node;
 }
 dt.setB = function() {
 	if (!inspector.selection.isNode()) return;
