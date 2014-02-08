@@ -3,6 +3,10 @@
 <script type="text/javascript" src="compareNodes.js"></script>
 <vbox flex="1">
 	<hbox>
+		<textbox id="htmA" multiline="true" flex="1" readonly="true"/>
+		<textbox id="htmB" multiline="true" flex="1" readonly="true"/>
+	</hbox>
+	<hbox>
 		<label value="Depth"/>
 		<textbox id="depth" value="1"/>
 		<button label="Compare" oncommand="comparePressed()"/>

@@ -39,6 +39,10 @@ function compare(A,Aid,B,Bid,godeep) {
 	    cssB = B.ownerDocument.defaultView.getComputedStyle(B,null);
 	console.log(cssA);
 	console.log(cssB);
+	
+	document.getElementById('htmA').value = A.outerHTML;
+	document.getElementById('htmB').value = B.outerHTML;
+	
 	for (let i=0; i<cssA.length; i++) {
 		if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
 			addlog(Aid+' css '+cssA[i]+'='+cssA.getPropertyValue(cssA[i]));
