@@ -16,6 +16,10 @@ function compare(A,Aid,B,Bid,godeep) {
 		document.getElementById('htmA').value = A.outerHTML;
 		document.getElementById('htmB').value = B.outerHTML;
 		first = false;
+		if (A === B) {
+			addlog('Those are identical (the same node)');
+			return;
+		}
 	}
 	
 	if (A.nodeName != B.nodeName) {
