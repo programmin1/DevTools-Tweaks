@@ -25,8 +25,8 @@
   <popupset><!-- shown in Fx22+ -->
     <menupopup id="dtCSSContext">
       <menuitem label="Copy Selection" accesskey="C" oncommand="dt.copySelection()"/>
-      <menuitem label="Copy URL" accesskey="U" oncommand="dt.urlCopy()" />
-      <menuitem label="Open URL in New Tab" accesskey="O" oncommand="dt.urlOpen()"/>
+      <menuitem id="dtCSSCOPYURL" label="Copy URL" accesskey="U" oncommand="dt.urlCopy()" />
+      <menuitem id="dtCSSOPENURL" label="Open URL in New Tab" accesskey="O" oncommand="dt.urlOpen()"/>
       <menuitem label="New Rule..." accesskey="N" oncommand="dt.newRule()"/>
     </menupopup>
   </popupset>

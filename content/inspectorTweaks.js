@@ -5,7 +5,7 @@
  * Released under MPL
  */
 
-//There is no right click menu to extend in Firefox 22+, these are workarounds:
+//There is no right click menu to extend in Firefox 22+ (well, in 27 there is only select-all, copy), these are workarounds:
 var dt = dt || {};
 dt.editHtml = function() {
 	inspector.tweak_editHtml = function() {
@@ -172,16 +172,31 @@ dt.newRule = function(e) {
 }
 // window.inspector is documented in inspector-panel.js
 // .doc and window is inspector.xul window.
-window.addEventListener('pageshow',function() {
-	var frame = document.getElementsByClassName('iframe-ruleview')[0];
-	if (!frame.contentWindow.location.href.contains('cssruleview.xul')) {
-		//Not the xul, it's a html we have to extend from here (Firefox 22+)
+window.addEventListener('pageshow',function(evt) {
+	// Uncomment to see a lot of html documents loading:
+	// Unfortunately you can't simply use evt.target.parentNode to get the document target's
+	// XUL wrapper.
+	
+	//console.log(evt.target);
+	
+	if (evt.target.baseURI.endsWith('cssruleview.xhtml')) { //css right panel has loaded:
+		var frame = document.getElementsByClassName('iframe-ruleview')[0];
+		//console.log('Ruleview found');
+		//console.log(evt);
+		//Not the old xul, it's a html we have to extend from here (Firefox 22+)
 		frame.setAttribute('context',"dtCSSContext");//For right click overlay
+		frame.addEventListener('contextmenu',function(e) {//Hide n/a elements:
+			let disp = e.target.tagName==='input' ? 'none' : ''; //Show if not text input:
+			document.getElementById('dtCSSCOPYURL').style.display = disp;
+			document.getElementById('dtCSSOPENURL').style.display = disp;
+			console.log(e.target);
+		}, true);
 	}
 	function styleit() {
-		var frame = document.getElementById('markup-box').children[0];
-		var doc = frame.contentDocument;
-		var style= doc.createElement('style');
+		let frame = document.getElementById('markup-box').children[0]
+		,	doc = frame.contentDocument
+		,	style= doc.createElement('style');
+		
 		style.appendChild(doc.createTextNode(
 		'.theme-selected { border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'+
 		'.highlighter.theme-selected {padding:0;margin-top:-1px;} li.child{margin-top:2px; margin-bottom:2px;}'+
@@ -201,9 +216,14 @@ window.addEventListener('pageshow',function() {
 			})
 		}*/
 	}
-	styleit();
-	window.inspector.on("markuploaded", styleit);
-	frame.addEventListener('load',styleit);
+	//styleit();
+	if (window.document === evt.target) {//Main (toplevel) frame loaded.
+		window.inspector.on("markuploaded", styleit);
+		//console.log('markuploaded set');
+	}
+	/*if (frame) {
+		frame.addEventListener('load',styleit);
+	}*/
 	//frame.contentWindow.addEventListener('load',styleit);
 });
 
