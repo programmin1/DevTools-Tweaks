@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<vbox id="webconsole-options">
+	<label value="Number of entries to keep in Web Console:"></label>
+	<hbox>
+		<label value="Console log:" width="150" align="end"></label><textbox width="65" value="200" id="dtconsole"></textbox>
+	</hbox>
+	<hbox>
+		<label value="CSS:" width="150" align="end"></label><textbox width="65" value="200" id="dtcssparser"></textbox>
+	</hbox>
+	<hbox>
+		<label value="Exceptions:" width="150" align="end"></label><textbox width="65" value="200" id="dtexception"></textbox>
+	</hbox>
+	<hbox>
+		<label value="Network Requests:" width="150" align="end"></label><textbox width="65" value="200" id="dtnetwork"></textbox>
+	</hbox>
+</vbox>
+
+<script src="toolbox-options.js"></script>
+</overlay>
