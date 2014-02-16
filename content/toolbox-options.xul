@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<vbox id="inspector-options">
+	<checkbox label="Scroll Highlighted Element Into View" data-pref="extensions.devtoolstweaks.allowScrollInspect"></checkbox>
+</vbox>
+
 <vbox id="webconsole-options">
 	<label value="Number of entries to keep in Web Console:"></label>
 	<hbox>

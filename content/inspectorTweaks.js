@@ -230,7 +230,13 @@ window.addEventListener('pageshow',function(evt) {
 	//frame.contentWindow.addEventListener('load',styleit);
 });
 
+dt.lastclick = 0;//for dbl click detection
 dt.changeInlineEdit = function(e) {
+	if (+new Date() - dt.lastclick > 1000) { //Click, not dbl-click:
+		dt.lastclick = +new Date();
+		return;
+	}
+	
 	function insertAfter(referenceNode, newNode) {
 		referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 	}
@@ -303,3 +309,25 @@ dt.changeInlineEdit = function(e) {
 //window.addEventListener('keypress',dt.changeInlineEdit);
 //dblclick not caught anymore, maybe something catches it before us? Mosueup works:
 window.addEventListener('mouseup', dt.changeInlineEdit);
+
+(function(){
+	var addonprefs = Components.classes["@mozilla.org/preferences-service;1"]
+         .getService(Components.interfaces.nsIPrefService)
+         .getBranch("extensions.devtoolstweaks.");
+         
+	Components.utils.import("resource://gre/modules/devtools/LayoutHelpers.jsm");
+	if (typeof LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded === 'function') {
+		console.log('already set our own function');
+	} else {
+		LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded =
+		LayoutHelpers.prototype.scrollIntoViewIfNeeded
+		
+		//console.log(layouthelpcomponent);
+		LayoutHelpers.prototype.scrollIntoViewIfNeeded = function() {
+			if (addonprefs.getBoolPref("allowScrollInspect")) {
+				LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded.apply(this, arguments);
+			}
+		}
+	}
+	
+}) ()
