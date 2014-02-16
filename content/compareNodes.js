@@ -12,9 +12,17 @@ first = true;
  * Given A node, identifier, B node, identifier, depth.
  */
 function compare(A,Aid,B,Bid,godeep) {
+	
 	if (first) {
-		document.getElementById('htmA').value = A.outerHTML;
-		document.getElementById('htmB').value = B.outerHTML;
+		let Aval = ""+A.outerHTML, Bval = ""+B.outerHTML;
+		if (Aval.length > 1024) {
+			Aval = Aval.substr(0,1000)+'...['+(Aval.length-1000)+' more not shown]';
+		}
+		if (Bval.length > 1024) {
+			Bval = Bval.substr(0,1000)+'...['+(Bval.length-1000)+' more not shown]';
+		}
+		document.getElementById('htmA').value = Aval;
+		document.getElementById('htmB').value = Bval;
 		first = false;
 		if (A === B) {
 			addlog('Those are identical (the same node)');
@@ -30,11 +38,11 @@ function compare(A,Aid,B,Bid,godeep) {
 		    other = B.attributes[key];
 		if (other !== undefined) {//both have attr.
 			if (A.attributes[a].value != other.value) {
-				addlog(Aid+' has attr '+key+'='+A.attributes[key].value);
-				addlog(Bid+' has attr '+key+'='+B.attributes[key].value);
+				addlog(Aid+' has attr '+key+'='+(A.attributes[key].value || 'undefined'));
+				addlog(Bid+' has attr '+key+'='+(B.attributes[key].value || 'undefined'));
 			}
 		} else {
-			addlog(Aid+' has attr '+key+'='+A.attributes[key].value+', not in other el.')
+			addlog(Aid+' has attr '+key+'='+(A.attributes[key].value || 'undefined')+', not in other el.')
 		}
 	}
 	//Also check for the other's unique attr:
@@ -42,7 +50,8 @@ function compare(A,Aid,B,Bid,godeep) {
 		let key = B.attributes[b].name,
 		    other = A.attributes[key];
 		if (other === undefined) {
-			addlog(Bid+' has attr '+key+'='+A.attributes[key].value+', not in other el.')
+			addlog(Bid+' has attr ' +
+			   key + '=' + (B.attributes[key].value || 'undefined') + ', not in other el.')
 		}
 	}
 	//This doesn't work with clones
@@ -65,7 +74,7 @@ function compare(A,Aid,B,Bid,godeep) {
 		for (let i=0; i<A.children.length; i++) {
 			if (i< B.children.length) { //compare it
 				compare(A.children[i], Aid+'.children['+i+']',
-						B.children[i], Bid+'.children['+i+']')
+						B.children[i], Bid+'.children['+i+']', godeep-1)
 			}
 		}
 	}

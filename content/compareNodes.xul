@@ -14,7 +14,7 @@
 			<button label="Compare" oncommand="comparePressed()"/>
 			<button label="Close"   oncommand="close()"/>
 		</hbox>
-		<textbox id="out" multiline="true" flex="1"/>
+		<textbox id="out" multiline="true" readonly="true" flex="1"/>
 	</vbox>
 </vbox>
 </window>
