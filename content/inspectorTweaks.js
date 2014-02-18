@@ -317,12 +317,12 @@ window.addEventListener('mouseup', dt.changeInlineEdit);
          
 	Components.utils.import("resource://gre/modules/devtools/LayoutHelpers.jsm");
 	if (typeof LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded === 'function') {
-		console.log('already set our own function');
+		//console.log('already set our own function');
 	} else {
 		LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded =
 		LayoutHelpers.prototype.scrollIntoViewIfNeeded
 		
-		//console.log(layouthelpcomponent);
+		//console.log("setting function");
 		LayoutHelpers.prototype.scrollIntoViewIfNeeded = function() {
 			if (addonprefs.getBoolPref("allowScrollInspect")) {
 				LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded.apply(this, arguments);
