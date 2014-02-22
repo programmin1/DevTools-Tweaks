@@ -3,7 +3,8 @@
  * Highlight them:
  */
 #output-container >div:hover {
-	background:#C1F0F4;
+	/*background:#DEDEDE;*/
+	background:rgba(107,141,242,0.16);
 	/*transition:background 0.3s ease-in;*/
 }
 /*#output-container >div {
