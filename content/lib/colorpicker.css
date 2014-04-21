@@ -2,6 +2,8 @@
 	position:relative;
 	z-index:100;
 }
+
+/* glitches the overview in newer Firefox 29 somehow.
 .over {
 	height:100%; width:100%;
 	position:fixed;
@@ -10,6 +12,7 @@
 	top:0;
 	background:rgba(0,0,0,0.1);
 }
+*/
 
 /*http://www.daviddurman.com/flexi-color-picker/#
  Common stuff */

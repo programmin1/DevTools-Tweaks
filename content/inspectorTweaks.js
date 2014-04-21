@@ -115,8 +115,10 @@ dt.getStylesheetOrUrl = function() {
 			} else {//no stylesheet, just current (selection's) page.
 				var SSurl = frame.ruleview.inspector.selection.window.location.href;
 			}
-			dump('stylesheet url:'+SSurl);
-			if (relUrl) {
+			console.log(SSurl);
+			//Seems SSurl can be null Fx29, when clicking http://someimage image link.
+			//console.log('stylesheet url:'+SSurl);
+			if (relUrl && SSurl) {
 				//see https://developer.mozilla.org/en-US/docs/XPCOM_Interface_Reference/nsIURI
 				var ioService = Components.classes["@mozilla.org/network/io-service;1"]
 					.getService(Components.interfaces.nsIIOService);
@@ -124,8 +126,10 @@ dt.getStylesheetOrUrl = function() {
 				var cssValueURI = ioService.newURI(relUrl, null, baseURI);
 				//frame.ruleview.inspector.selection.window.open(cssValueURI.spec);
 				return cssValueURI.spec;
-			} else {
+			} else if (SSurl) {
 				return SSurl;
+			} else if (relUrl) { //Should be http://url already?
+				return relUrl;
 			}
 		} else if (ruleDivs.children[i].classList.contains('ruleview-rule')) {
 			//only want 0-based nth rule, not headings.
@@ -195,15 +199,15 @@ window.addEventListener('pageshow',function(evt) {
 			}
 		}, true);
 	}
-	function styleit() {
+	function styleit() {//Optional style for inspector - not really needed in newr Fx29.
 		let frame = document.getElementById('markup-box').children[0]
 		,	doc = frame.contentDocument
 		,	style= doc.createElement('style');
 		
 		style.appendChild(doc.createTextNode(
-		'.theme-selected { border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'+
-		'.highlighter.theme-selected {padding:0;margin-top:-1px;} li.child{margin-top:2px; margin-bottom:2px;}'+
-		'.theme-twisty:not([open]) {top:5px; left:5px;}'
+		'html.theme-light .theme-selected { border:1px solid blue; padding:1px; margin-left:-2px; border-radius:3px;}'+
+		'html.theme-light .highlighter.theme-selected {padding:0;margin-top:-1px;} li.child{margin-top:2px; margin-bottom:2px;}'+
+		'html.theme-light .theme-twisty:not([open]) {top:5px; left:5px;}'
 		));
 		//  ^ .highlighter.theme-selected is for Fx26, adjusting full-line spacing and selection border.
 		doc.body.appendChild(style);//what's the equivalent for old xul file?
@@ -219,11 +223,12 @@ window.addEventListener('pageshow',function(evt) {
 			})
 		}*/
 	}
-	//styleit();
-	if (window.document === evt.target) {//Main (toplevel) frame loaded.
-		window.inspector.on("markuploaded", styleit);
-		//console.log('markuploaded set');
-	}
+	setTimeout(function(){//Why is setTimeout required? see https://bugzilla.mozilla.org/show_bug.cgi?id=994468
+		if (window.document === evt.target) {//Main (toplevel) frame loaded.
+			//window.inspector.on("markuploaded", styleit); Don't style this
+			//console.log('markuploaded set');
+		}
+	},10);
 	/*if (frame) {
 		frame.addEventListener('load',styleit);
 	}*/
@@ -236,7 +241,9 @@ dt.changeInlineEdit = function(e) {
 		dt.lastclick = +new Date();
 		return;
 	}
-	
+	/* Extra colorpicker Not needed in Fx 28+, just interferes popup css sometimes.
+	   Maybe later could be moved to the styles tab.
+
 	function insertAfter(referenceNode, newNode) {
 		referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 	}
@@ -282,24 +289,8 @@ dt.changeInlineEdit = function(e) {
 			})
 			
 			return false;
-			/*window.setTimeout(function() {
-				//Should be converted to inplaceEditor now.
-				//See https://hg.mozilla.org/integration/fx-team/file/672608b227c3/browser/devtools/shared/InplaceEditor.jsm
-				console.log('inlineedit');
-				var ed = e.target.inplaceEditor;
-				var fxCreate = ed._createInput;
-				console.log(ed)
-				ed._createInput = function() {
-					
-					fxCreate.call(this);
-					//After creating:
-					this.input.addEventListener('click',function() {
-						console.log('inplace');
-					})
-				}
-			},10);*/
 		}
-	}
+	}*/
 	
 	//if (e.target.nodeName=='input' && e.target.inplaceEditor) {
 	//	var ed = e.target.inplaceEditor;
@@ -308,7 +299,7 @@ dt.changeInlineEdit = function(e) {
 //Catch click or enter on the rule edit span:
 //window.addEventListener('keypress',dt.changeInlineEdit);
 //dblclick not caught anymore, maybe something catches it before us? Mosueup works:
-window.addEventListener('mouseup', dt.changeInlineEdit);
+//window.addEventListener('mouseup', dt.changeInlineEdit);
 
 (function(){
 	var addonprefs = Components.classes["@mozilla.org/preferences-service;1"]
