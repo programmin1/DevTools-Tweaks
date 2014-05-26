@@ -49,11 +49,11 @@ dt.editHtml = function() {
 dt.setA = function() {
 	if (!inspector.selection.isNode()) return;
 	
-	dt.cmpA = inspector.selection.node;
+	window.top._InspectedA = inspector.selection.node;
 }
 dt.setB = function() {
 	if (!inspector.selection.isNode()) return;
-	if (!dt.cmpA) {
+	if (!window.top._InspectedA) {
 		alert("Please choose element A first.");
 		return;
 	}
@@ -61,7 +61,7 @@ dt.setB = function() {
 	dt.cmpB = inspector.selection.node;
 	window.openDialog("chrome://devtooltweaks/content/compareNodes.xul",
 		"devtoolTweakCmp", "chrome,centerscreen,resizable", /*args:*/
-			{A:dt.cmpA, B:dt.cmpB});
+			{A:window.top._InspectedA, B:dt.cmpB});
 }
 
 dt.copySelection = function(e) {
