@@ -1,6 +1,5 @@
 content	devtooltweaks	content/
 
-overlay chrome://browser/content/devtools/framework/toolbox.xul chrome://devtooltweaks/content/toolboxOverlay.xul
 style   chrome://browser/content/devtools/framework/toolbox.xul chrome://devtooltweaks/content/css/devToolStyle.css
 
 overlay chrome://browser/content/devtools/framework/toolbox-options.xul chrome://devtooltweaks/content/toolbox-options.xul
