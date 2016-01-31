@@ -8,13 +8,28 @@
 toolbar.devtools-tabbar {
  min-height:24px;
  height:24px;
- background:rgba(0,0,0,0.75);
+}
+
+/* Limit width so the separate window, x don't go off screen: */
+#toolbox-tabs {
+	max-width:calc(60% - 40px);
+	overflow:hidden;
+}
+#toolbox-buttons {
+	max-width:calc(30% - 40px);
+	overflow:hidden;
 }
 
 #toolbox-tabs > radio {
  min-height: 24px;
  height: 24px;
 }
+
+/*#toolbox-controls {
+	position:absolute;
+	top:0; right:0;
+	background: inherit;
+}*/
 
 /*Make the rightmost (leftmost on mac?) icons bigger clickable area:*/
 #toolbox-controls >toolbarbutton,
