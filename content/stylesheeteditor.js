@@ -1,8 +1,8 @@
 document.addEventListener('mousedown',function(e) {
-	// Make the link an actual link:
-	if (e.target.parentNode.nodeName == 'a' &&
+	// Make the link an actual link: Now we have right click function.
+	/*if (e.target.parentNode.nodeName == 'a' &&
 	  e.target.parentNode.classList.contains('stylesheet-name')) {
-		var cssurl = e.target.value;
+		var cssurl = e.target.getAttribute('tooltiptext');
 		if (!(cssurl.startsWith('<inline style'))) {
 			if (!(cssurl.startsWith('http:')) && !(cssurl.startsWith('ftp:')) && !(cssurl.startsWith('https:'))) {
 				// Calculate url from relative url:
@@ -16,5 +16,5 @@ document.addEventListener('mousedown',function(e) {
 			}
 			window.parent.content.open(cssurl);
 		}
-	}
+	}*/
 });

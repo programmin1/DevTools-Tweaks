@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 <script src="chrome://devtooltweaks/content/stylesheeteditor.js"></script>
+<!-- TODO figure out how to get a search/filter for css file
+won't even add :(
+<textbox insertbefore="style-editor-options" ></textbox>
+-->
 </overlay>

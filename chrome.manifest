@@ -1,20 +1,20 @@
 content	devtooltweaks	content/
 
-style   chrome://browser/content/devtools/framework/toolbox.xul chrome://devtooltweaks/content/css/devToolStyle.css
+# In Fx44 all these xul references changed:
+style   chrome://devtools/content/framework/toolbox.xul chrome://devtooltweaks/content/css/devToolStyle.css
 
-overlay chrome://browser/content/devtools/framework/toolbox-options.xul chrome://devtooltweaks/content/toolbox-options.xul
+overlay chrome://devtools/content/framework/toolbox-options.xul chrome://devtooltweaks/content/toolbox-options.xul
 
-overlay chrome://browser/content/devtools/inspector/inspector.xul  chrome://devtooltweaks/content/inspectorOverlay.xul
-style chrome://browser/content/devtools/inspector/inspector.xul    chrome://devtooltweaks/content/css/inspectorCss.css
+overlay chrome://devtools/content/inspector/inspector.xul  chrome://devtooltweaks/content/inspectorOverlay.xul
+style chrome://devtools/content/inspector/inspector.xul    chrome://devtooltweaks/content/css/inspectorCss.css
 
 overlay chrome://browser/content/devtools/cssruleview.xul  chrome://devtooltweaks/content/cssInspectorOverlay.xul
 
-overlay chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/netWinOverlay.xul
-style   chrome://browser/content/devtools/webconsole.xul chrome://devtooltweaks/content/css/webconsole.css
+overlay chrome://devtools/content/webconsole/webconsole.xul chrome://devtooltweaks/content/netWinOverlay.xul
+style   chrome://devtools/content/webconsole/webconsole.xul chrome://devtooltweaks/content/css/webconsole.css
 
-overlay chrome://browser/content/devtools/styleeditor.xul chrome://devtooltweaks/content/styleeditorOverlay.xul
-style   chrome://browser/content/devtools/styleeditor.xul chrome://devtooltweaks/content/css/styleeditor.css
+overlay chrome://devtools/content/styleeditor/styleeditor.xul chrome://devtooltweaks/content/styleeditorOverlay.xul
+style   chrome://devtools/content/styleeditor/styleeditor.xul chrome://devtooltweaks/content/css/styleeditor.css
 
-overlay chrome://browser/content/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
-# new in FX23:
-overlay chrome://browser/content/devtools/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
+overlay chrome://devtools/content/debugger/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
+overlay chrome://devtools/content/debugger/debugger.xul chrome://devtooltweaks/content/debugOverlay.xul
