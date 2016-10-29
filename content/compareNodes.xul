@@ -11,6 +11,9 @@
 		<hbox>
 			<label value="Depth"/>
 			<textbox id="depth" value="1"/>
+			
+			<checkbox id="checkBefore" label=":before" checked="false" title="Compare pseudo-elements"/>
+			<checkbox id="checkAfter" label=":after" checked="false" title="Compare pseudo-elements"/>
 			<button label="Compare" oncommand="comparePressed()"/>
 			<button label="Close"   oncommand="close()"/>
 		</hbox>

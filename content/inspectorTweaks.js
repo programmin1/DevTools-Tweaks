@@ -8,24 +8,7 @@
 //There is no right click menu to extend in Firefox 22+ (well, in 27 there is only select-all, copy), these are workarounds:
 var dt = dt || {};
 
-//Context menu events:
-dt.setA = function() {
-	if (!inspector.selection.isNode()) return;
-	
-	window.top._InspectedA = inspector.selection.node;
-}
-dt.setB = function() {
-	if (!inspector.selection.isNode()) return;
-	if (!window.top._InspectedA) {
-		alert("Please choose element A first.");
-		return;
-	}
-	
-	dt.cmpB = inspector.selection.node;
-	window.openDialog("chrome://devtooltweaks/content/compareNodes.xul",
-		"devtoolTweakCmp", "chrome,centerscreen,resizable", /*args:*/
-			{A:window.top._InspectedA, B:dt.cmpB});
-}
+// Old Context menu events:
 
 dt.copySelection = function(e) {
 	var doc = document.popupNode.ownerDocument.defaultView;
@@ -140,7 +123,6 @@ dt.newRule = function(e) {/*
 // window.inspector is documented in inspector-panel.js
 // .doc and window is inspector.xul window.
 if (typeof WebConsoleFrame === 'undefined') {
-	//console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
 	
 	//For global nodeA, nodeB variables shared with all windows:
 	Components.utils.import("chrome://devtooltweaks/content/modules/commonNodes.jsm");

@@ -64,6 +64,54 @@ function compare(A,Aid,B,Bid,godeep) {
 			addlog(Bid+' css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
 		}
 	}
+	
+	//If applicable, check before/after.
+	if( document.getElementById('checkBefore').checked ) {
+	    cssA = A.ownerDocument.defaultView.getComputedStyle(A, ':before')
+	    cssB = B.ownerDocument.defaultView.getComputedStyle(B, ':before');
+	    let contentA = cssA['content'], contentB = cssB['content'];
+	    if( contentA != 'none' || contentB != 'none') {
+		//One or both have a before.
+		if( contentA === 'none' ) {
+		    addlog(Bid+' has :before element, A does not, here.');
+		} else if ( contentB === 'none' ) {
+		    addlog(Aid+' has :before element, B does not, here.');
+		} else {
+		    //Both. compare:
+		    for (let i=0; i<cssA.length; i++) {
+			if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
+				addlog(Aid+':before css '+cssA[i]+'='+cssA.getPropertyValue(cssA[i]));
+				addlog(Bid+':before css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
+			}
+		    }
+		}
+	    }
+	    
+	}
+	//TODO maybe de-duplicate these two with a function('before/after') if any more is added.
+	if( document.getElementById('checkAfter').checked ) {
+	    cssA = A.ownerDocument.defaultView.getComputedStyle(A, ':after');
+	    cssB = B.ownerDocument.defaultView.getComputedStyle(B, ':after');
+	    let contentA = cssA['content'], contentB = cssB['content'];
+	    if( contentA != 'none' || contentB != 'none') {
+		//One or both have a after.
+		if( contentA === 'none' ) {
+		    addlog(Bid+' has :after element, A does not, here.');
+		} else if ( contentB === 'none' ) {
+		    addlog(Aid+' has :after element, B does not, here.');
+		} else {
+		    //Both. compare:
+		    for (let i=0; i<cssA.length; i++) {
+			if (cssA.getPropertyValue(cssA[i]) != cssB.getPropertyValue(cssB[i])) {
+				addlog(Aid+':after css '+cssA[i]+'='+cssA.getPropertyValue(cssA[i]));
+				addlog(Bid+':after css '+cssB[i]+'='+cssB.getPropertyValue(cssB[i]));
+			}
+		    }
+		}
+	    }
+	    
+	}
+	
 	if (A.children.length !== B.children.length) {
 		addlog(Aid+' has '+A.children.length+' children, '+Bid+' has '+B.children.length);
 	}
