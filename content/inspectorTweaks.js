@@ -7,34 +7,7 @@
 
 //There is no right click menu to extend in Firefox 22+ (well, in 27 there is only select-all, copy), these are workarounds:
 var dt = dt || {};
-dt.editHtml = function() {/*
-	inspector.tweak_editHtml = function() {
-		// Running in the same context as the inspector.* elements in InspectorPanel.jsm,
-		// similar to copyInner.
-		if (!this.selection.isNode()) {
-			return;
-		}
-		if (this.selection.node) {
-			var atts = this.selection.node.attributes;
-			var title = "Edit: <"+this.selection.node.nodeName.toLowerCase();
-			for (let i=0; i<atts.length; i++) {
-				title += ' '+atts[i].name+'="'+atts[i].value+'"';
-			}
-			title += '>';
-			
-			var toCopy = {src:''+this.selection.node.innerHTML, title:title};
-			window.openDialog("chrome://devtooltweaks/content/editDialog.xul",
-			"devtoolTweakEdit", "chrome,centerscreen,modal,resizable", 
-			toCopy);
-			if (typeof toCopy.src=='string') {
-				this.selection.node.innerHTML = toCopy.src;
-				this.markDirty();
-			}
-		}
-		//like webconsole.js,      this.webConsoleClient.evaluateJS(aExecuteString, onResult);
-	};
-	inspector.tweak_editHtml();
-*/}
+
 //Context menu events:
 dt.setA = function() {
 	if (!inspector.selection.isNode()) return;
@@ -166,13 +139,75 @@ dt.newRule = function(e) {/*
 }
 // window.inspector is documented in inspector-panel.js
 // .doc and window is inspector.xul window.
+if (typeof WebConsoleFrame === 'undefined') {
+	//console = Components.utils.import("resource://gre/modules/devtools/Console.jsm").console;
+	
+	//For global nodeA, nodeB variables shared with all windows:
+	Components.utils.import("chrome://devtooltweaks/content/modules/commonNodes.jsm");
+	
+	var {devtools} = Components.utils.import("resource://gre/modules/devtools/Loader.jsm", {});
+	
+	const Menu = devtools.require("devtools/client/framework/menu");
+	const MenuItem = devtools.require("devtools/client/framework/menu-item");
+	var {InspectorPanel} = devtools.require("devtools/client/inspector/inspector-panel");//.js
+	
+	if (!InspectorPanel.prototype.devToolsTweaksChanged) {
+		//Run this once for each inspector object, otherwise opening F12 again would double these menus etc.
+		InspectorPanel.prototype.devToolsTweaksChanged = true;
+	
+		//This is attaching to, "duck punching" devtools/client/inspector/inspector-panel.js.
+		origOpen = InspectorPanel.prototype._openMenu;
+		InspectorPanel.prototype._openMenu = function( obj ) {
+			var inspector = this;
+			let menu = origOpen.apply(this, arguments);
+			menu.append(new MenuItem({
+			  type: "separator",
+			}));
+			menu.append(new MenuItem({
+				label: "Set Node A",
+				accesskey: "A",
+				click: function() {
+					if (!inspector.selection.isNode()) return;
+					nodeA = inspector.selection.node;
+				}
+			}));
+			menu.append(new MenuItem({
+				label: "Set Node B and Compare",
+				accesskey: "B",
+				click: function() {
+					if (!inspector.selection.isNode()) return;
+					if (!nodeA) {
+						alert("Please choose element A first.");
+						return;
+					}
+
+					nodeB = inspector.selection.node;
+					window.openDialog("chrome://devtooltweaks/content/compareNodes.xul",
+						"devtoolTweakCmp", "chrome,centerscreen,resizable", /*args:*/
+							{A:nodeA, B:nodeB});
+				}
+			}));
+			menu.popup( obj.screenX, obj.screenY, this._toolbox );
+			return menu;
+		};
+	}
+	
+}
+
 window.addEventListener('pageshow',function(evt) {
 	// Uncomment to see a lot of html documents loading:
 	// Unfortunately you can't simply use evt.target.parentNode to get the document target's
 	// XUL wrapper.
-	
+	/*
 	console.log(evt.target);
 	
+	if (evt.target.baseURI.endsWith('markup.xhtml')) { //css right panel has loaded:
+		let doc = evt.target
+		,   win = doc.defaultView;
+		doc.addEventListener( 'load', function() {
+			
+		});
+	}*/
 	if (evt.target.baseURI.endsWith('cssruleview.xhtml')) { //css right panel has loaded:
 		/*var frame = document.getElementsByClassName('iframe-ruleview')[0];
 		//console.log('Ruleview found');
@@ -219,7 +254,7 @@ window.addEventListener('pageshow',function(evt) {
 	var addonprefs = Components.classes["@mozilla.org/preferences-service;1"]
          .getService(Components.interfaces.nsIPrefService)
          .getBranch("extensions.devtoolstweaks.");
-         
+    /*
 	Components.utils.import("resource://gre/modules/devtools/LayoutHelpers.jsm");
 	if (typeof LayoutHelpers.prototype.reallyscrollIntoViewIfNeeded === 'function') {
 		//console.log('already set our own function');
@@ -233,5 +268,5 @@ window.addEventListener('pageshow',function(evt) {
 			}
 		}
 	}
-	
+	*/
 }) ()

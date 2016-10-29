@@ -1,33 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay id="dtInspectorOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<popupset id="inspectorPopupSet">
-	<menupopup id="inspector-node-popup">
-	<!--    <menuitem id="node-menu-edititem"
-			label="Edit HTML"
-			accesskey="E"
-			oncommand="dt.editHtml()"
-			position="1"/>-->
-		<menuseparator position="2"/>
-		<menuitem id="node-menu-setA"
-			label="Set Node A"
-			accesskey="A"
-			oncommand="dt.setA()"
-			position="3"/>
-		<menuitem id="node-menu-setB"
-			label="Set Node B and Compare"
-			accesskey="B"
-			oncommand="dt.setB()"
-			position="4"/>
-		<menuseparator position="5"/>
-
-	</menupopup>
-	<menupopup id="rule-view-context-menu">
-	  <!--<menuitem label="Copy Selection" accesskey="C" oncommand="dt.copySelection()"/>-->
-	  <menuitem position="4" id="dtCSSCOPYURL" label="Copy URL" accesskey="U" oncommand="dt.urlCopy()" />
-	  <menuitem position="5" id="dtCSSOPENURL" label="Open URL in New Tab" accesskey="O" oncommand="dt.urlOpen()"/>
-	  <!--<menuitem label="New Rule..." accesskey="N" oncommand="dt.newRule()"/>-->
-	</menupopup>
-</popupset>
 
 <script src="chrome://devtooltweaks/content/inspectorTweaks.js"></script>
 </overlay>

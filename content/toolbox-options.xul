@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
+<!-- TODO this is now HTML, need to rework this -->
 <vbox id="inspector-options">
 	<checkbox label="Scroll Highlighted Element Into View" data-pref="extensions.devtoolstweaks.allowScrollInspect"></checkbox>
 </vbox>

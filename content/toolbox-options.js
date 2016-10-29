@@ -5,6 +5,8 @@
  */
 
 window.addEventListener('load',function(){
+	//Never gets to this anymore...
+	console.log(this);
 	//Corresponding to dt[val]-id element and devtools.hud.loglimit.[val] built in firefox pref:
 	// (Those values are looked up in logLimitForCategory in devtools/webconsole/webconsole.js)
 	let opts = ['console','cssparser','exception','network'];
